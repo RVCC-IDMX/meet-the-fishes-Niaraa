@@ -42,10 +42,10 @@
     /*
         Depending on the system or context, these can be called "scenes" "views" "pages" "panels" or all sorts of other things.
 
-        The important bit is that they are each a grouping or state of different interface elements that need to be on the screen at different times.
+       The important bit is that they are each a grouping or state of different interface elements that need to be on the screen at different times.
 
         We'll call them "scenes" – if only because they're going up onto the Pixi.js stage object when we need them.
-    * /
+     */
 
     //
     // Let's create a few really boring scenes using Pixi.js Containers
@@ -69,7 +69,21 @@
 
     //And place it into the scene
     scene1.addChild(scene1Text);
+    
+    //Add fish
+    //Load in sprite
+    await PIXI.Assets.load('img/lepomis-macrochirus.png');
 
+    //Add first sprite
+    let fish1 = PIXI.Sprite.from('img/lepomis-macrochirus.png');
+    fish1.scale.set(.25);
+    fish1.scale.x = -.25;
+    fish1.anchor.x = .8;
+    fish1.anchor.y = .5;
+    fish1.x = 300;
+    fish1.y = 200;
+
+    scene1.addChild(fish1);
 
     //SCENE 2
     let scene2 = new PIXI.Container();
@@ -94,6 +108,9 @@
     //Now let's add the first scene to the stage
     app.stage.addChild(scene1);
 
+    //Add fish
+
+
 
     /*
 
@@ -101,7 +118,7 @@
 
         The easiest, ugliest way to swap between scenes, would be to assign some code to each button to pull the current scene off the stage and replace it with another.
 
-    * /
+    */
 
     //
     // Swapping between scenes
@@ -123,7 +140,7 @@
 
         It would be better if we could build in a nice fade transition, though, right?
 
-    * /
+    */
 
     nextButton.onclick = async () => {
         //Fade out current scene
@@ -159,7 +176,7 @@
 
         Or how about a swipe transition?
 
-    * /
+    */
 
     nextButton.onclick = async () => {
         //Set up next scene on the right
@@ -207,7 +224,7 @@
 
         Let's create a system for scene management.
 
-    * /
+    */
 
     //Let's call it the Director. It calls the shots.
     var Director = {
@@ -240,7 +257,7 @@
             if (params == undefined) params = {};
 
             let currentScene = Director.scene[Director.currentScene];
-                nextScene    = Director.scene[nextSceneName];
+               let nextScene    = Director.scene[nextSceneName];
 
             if (params.transition == undefined)
                 params.transition = Director.cut;
@@ -352,13 +369,15 @@
 
         Now let's set up our prior scenes with the Director instead.
 
-    * /
+    */
 
     Director.addScene("first",scene1);
     Director.addScene("second",scene2);
 
     nextButton.onclick = () => {
-        Director.showScene("second");
+        Director.showScene("second", {
+            
+        });
     }
 
     backButton.onclick = () => {
